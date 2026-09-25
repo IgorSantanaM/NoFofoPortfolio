@@ -14,6 +14,16 @@ npm run dev
 
 Run `npm run build` to type-check and build the production site. Run `npm run preview` to preview the compiled output.
 
+## Docker
+
+From `NoFofoPortfolio/`, build and start the production container:
+
+```sh
+docker compose up -d --build
+```
+
+The portfolio is available at http://localhost:32050. Stop it with `docker compose down`.
+
 ## Deployment
 
 GitHub Actions builds and deploys to GitHub Pages automatically on every push to `main`. You can also run **Deploy portfolio to GitHub Pages** manually from the Actions tab.
