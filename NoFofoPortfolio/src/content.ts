@@ -1,6 +1,6 @@
 export const siteConfig = {
   // Informe o número com país e DDD, somente dígitos. Ex.: 55 + DDD + número.
-  whatsappNumber: '556796073524',
+  whatsappNumber: '5567996073524',
   instagramUrl: '',
   email: '',
 }
