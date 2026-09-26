@@ -1687,3 +1687,63 @@ h2 {
         max-width: 50%
     }
 }
+/* Real creations and their photo galleries. */
+.creation-description {
+    margin-bottom: 14px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #684d51;
+}
+.gallery-badge, .gallery-controls {
+    position: absolute;
+    bottom: 14px;
+    background: var(--paper);
+    color: var(--wine);
+    border-radius: 28px;
+    font-size: 12px;
+}
+.gallery-badge { left: 14px; padding: 9px 14px; }
+.gallery-controls {
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px;
+    white-space: nowrap;
+}
+.gallery-controls button {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--paper);
+    font-size: 22px;
+}
+.gallery-controls button:hover { background: var(--rose); }
+.detail-visual .product-photo {
+    position: absolute;
+    inset: 0;
+    object-fit: contain;
+    padding-block: 16px 76px;
+}
+
+/* Full-width background and fluid content, matching the contact section. */
+.order-section {
+    padding-block: clamp(60px, 7vw, 95px) clamp(40px, 6vw, 80px);
+}
+.order-inner .section-heading { flex-wrap: wrap; }
+.order-inner .section-heading h2 {
+    font-size: clamp(36px, 6vw, 84px);
+    min-width: 0;
+}
+@media (max-width: 600px) {
+    .order-section { padding-block: 60px 40px; }
+    .order-inner .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .steps { grid-template-columns: 1fr; }
+    .creation-description { font-size: 13px; }
+    .detail-visual { height: 360px; }
+}

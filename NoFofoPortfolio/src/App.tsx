@@ -12,12 +12,24 @@ function Brand({ footer = false }: { footer?: boolean }) {
 
 function CreationVisual({ creation, detail = false }: { creation: Creation; detail?: boolean }) {
   const [failed, setFailed] = useState(false)
+  const [photoIndex, setPhotoIndex] = useState(0)
+  const photos = creation.gallery?.length ? creation.gallery : [{ image: creation.image, alt: creation.imageAlt }]
+  const photo = photos[detail ? photoIndex : 0]
+  function changePhoto(index: number) {
+    setPhotoIndex((index + photos.length) % photos.length)
+    setFailed(false)
+  }
   return <div className={`creation-visual tone-${creation.tone} ${detail ? 'detail-visual' : ''}`}>
-    {creation.image && !failed ? <img className="product-photo" src={assetUrl(creation.image)} alt={creation.imageAlt || creation.name} loading="lazy" onError={() => setFailed(true)} /> : <>
+    {photo.image && !failed ? <img key={photo.image} className="product-photo" src={assetUrl(photo.image)} alt={photo.alt || creation.name} loading="lazy" onError={() => setFailed(true)} /> : <>
       <div className={`thread-composition motif-${creation.motif}`} aria-hidden="true">{Array.from({ length: 7 }, (_, i) => <i key={i} style={{ '--i': i } as React.CSSProperties} />)}</div>
       <span className="placeholder-caption">{failed ? 'FOTOGRAFIA INDISPONÍVEL' : 'FOTOGRAFIA EM BREVE'}</span>
     </>}
     {creation.provisional && <span className="example-tag">Exemplo de criação</span>}
+    {photos.length > 1 && (detail ? <div className="gallery-controls" role="group" aria-label={`Galeria de ${creation.name}`}>
+      <button type="button" aria-label="Foto anterior" onClick={() => changePhoto(photoIndex - 1)}>←</button>
+      <span role="status" aria-live="polite">Foto {photoIndex + 1} de {photos.length}</span>
+      <button type="button" aria-label="Próxima foto" onClick={() => changePhoto(photoIndex + 1)}>→</button>
+    </div> : <span className="gallery-badge">Galeria · {photos.length} fotos</span>)}
   </div>
 }
 
@@ -97,17 +109,17 @@ function App() {
       <section id="criacao" className="section-wrap portfolio" aria-labelledby="portfolio-heading">
         <div data-reveal><p className="eyebrow">NOSSAS CRIAÇÕES</p><div className="section-heading"><h2 id="portfolio-heading">Afeto em <em>cada ponto.</em></h2><p>Pequenas criações para grandes significados.<br />Explore as possibilidades do feito à mão.</p></div></div>
         <div className="catalog-toolbar"><div className="filters" role="group" aria-label="Filtrar criações por categoria">{categories.map(item => <button key={item} type="button" aria-pressed={category === item} onClick={() => setCategory(item)}>{item}</button>)}</div><span className="results-count" role="status">{visibleCreations.length} {visibleCreations.length === 1 ? 'criação' : 'criações'}</span></div>
-        <p className="demo-note">Uma prévia do que pode nascer por aqui. Nomes e descrições são demonstrativos; as fotografias das peças reais chegam em breve.</p>
-        <div className="creation-grid" key={category}>{visibleCreations.map((creation, index) => <article className="creation-card" key={creation.id} style={{ '--order': index } as React.CSSProperties}><button type="button" className="creation-button" aria-label={`Ver detalhes de ${creation.name}`} onClick={() => setModal({ type: 'creation', creation })}><CreationVisual creation={creation} /><div className="creation-meta"><div><p className="creation-category">{creation.category}</p><h3>{creation.name}</h3></div><span className="circle-arrow" aria-hidden="true">↗</span></div><span className="card-details">Conhecer a ideia <span aria-hidden="true">↗</span></span></button></article>)}</div>
+        <p className="demo-note">Conheça nossas peças feitas à mão. Abra cada criação para ver os detalhes e se inspirar na sua encomenda.</p>
+        <div className="creation-grid" key={category}>{visibleCreations.map((creation, index) => <article className="creation-card" key={creation.id} style={{ '--order': index } as React.CSSProperties}><button type="button" className="creation-button" aria-label={`Ver detalhes de ${creation.name}`} onClick={() => setModal({ type: 'creation', creation })}><CreationVisual creation={creation} /><div className="creation-meta"><div><p className="creation-category">{creation.category}</p><h3>{creation.name}</h3></div><span className="circle-arrow" aria-hidden="true">↗</span></div><p className="creation-description">{creation.description}</p><span className="card-details">Ver detalhes <span aria-hidden="true">↗</span></span></button></article>)}</div>
         {visibleCreations.length === 0 && <p className="empty-state">Novos pontos estão a caminho. <button onClick={() => setCategory('Todas')}>Ver todas as criações</button></p>}
         <div className="catalog-footer"><span>Imaginou algo diferente?</span><button type="button" className="text-link button contact-cta-main" rel='noopener noreferreronClick' onClick={() => openContact()}>Vamos criar do seu jeito <span aria-hidden="true">↗</span></button></div>
       </section>
-      <section id="encomenda" className="section-wrap order-section" aria-labelledby="order-heading"><div data-reveal><p className="eyebrow">DO PRIMEIRO OI AO ÚLTIMO PONTO</p><div className="section-heading"><h2 id="order-heading">Sua ideia.<br /><em>Nossos pontos.</em></h2><p>Uma criação especial começa com uma conversa. Veja o caminho para tirar a sua ideia do papel.</p></div></div><ol className="steps">{[
+      <section id="encomenda" className="order-section" aria-labelledby="order-heading"><div className="section-wrap order-inner"><div data-reveal><p className="eyebrow">DO PRIMEIRO OI AO ÚLTIMO PONTO</p><div className="section-heading"><h2 id="order-heading">Sua ideia.<br /><em>Nossos pontos.</em></h2><p>Uma criação especial começa com uma conversa. Veja o caminho para tirar a sua ideia do papel.</p></div></div><ol className="steps">{[
         ['A gente conversa', 'Conte sua ideia, para quem é a peça e o que a torna especial. Pode trazer referências e suas cores favoritas.'],
         ['Cada detalhe combina', 'Definimos possibilidades, materiais, valor, prazo e entrega antes de confirmar a encomenda.'],
         ['O carinho ganha forma', 'Com os detalhes aprovados, começa a criação. É o tempo de transformar os fios em algo seu.'],
         ['Pronto para fazer sorrir', 'A peça é finalizada e segue para você, conforme a forma de entrega combinada.'],
-      ].map(([title, text], i) => <li key={title} data-reveal><span className="step-number">0{i + 1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol><p className="order-note">Cada peça tem seu tempo. Disponibilidade, valores e prazos são combinados individualmente.</p></section>
+      ].map(([title, text], i) => <li key={title} data-reveal><span className="step-number">0{i + 1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol><p className="order-note">Cada peça tem seu tempo. Disponibilidade, valores e prazos são combinados individualmente.</p></div></section>
       <section id="contato" className="contact-section" aria-labelledby="contact-heading">
         <div className="section-wrap contact-inner" data-reveal>
           <h2 id="contact-heading">
