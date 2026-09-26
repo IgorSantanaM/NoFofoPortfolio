@@ -1,7 +1,7 @@
 export const siteConfig = {
   // Informe o número com país e DDD, somente dígitos.
   whatsappNumber: '5567996073524',
-  instagramUrl: 'https://www.instagram.com/anaile_ac100/',
+  instagramUrl: 'https://www.instagram.com/nofofo.art/',
   email: 'aguirredocarmoa@gmail.com',
 }
 export const categories = ['Todas', 'Amigurumis', 'Decoração', 'Acessórios', 'Personalizados'] as const

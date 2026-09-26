@@ -48,7 +48,7 @@ function App() {
   const whatsapp = siteConfig.whatsappNumber.replace(/\D/g, '')
   const contactAvailable = Boolean(whatsapp || siteConfig.email)
   const whatsappDisplay = whatsapp.replace(/^55(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3')
-  const whatsappUrl = `https://wa.me/${whatsapp}?text=${encodeURIComponent('Olá, Nó Fofo! Gostaria de conversar sobre uma encomenda.')}`
+  const whatsappUrl = `https://wa.me/${whatsapp}?text=${encodeURIComponent('Olá, Anaile! Gostaria de conversar sobre uma encomenda.')}`
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -79,7 +79,7 @@ function App() {
 
   function openContact(creation?: Creation) {
     setCopied(false); setCopyError(false)
-    setDraft(creation ? `Olá, Nó Fofo! Gostaria de conversar sobre uma criação na categoria ${creation.category}, inspirada em “${creation.name}”. Minha ideia é: ` : 'Olá, Nó Fofo! Quero transformar uma ideia em uma peça de crochê. Minha ideia é: ')
+    setDraft(creation ? `Olá, Anaile! Gostaria de conversar sobre uma criação na categoria ${creation.category}, inspirada em “${creation.name}”. Minha ideia é: ` : 'Olá, Anaile! Quero transformar uma ideia em uma peça de crochê. Minha ideia é: ')
     setModal({ type: 'contact', creation })
     setMenuOpen(false)
   }
